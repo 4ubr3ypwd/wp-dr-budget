@@ -1,32 +1,5 @@
 <?php
 
-/*
-Plugin Name: WP DR Budget
-Plugin URI: https://github.com/aubreypwd/wp-dr-budget
-Description:
-Version: 1.0.0
-Author: Aubrey Portwood
-Author URI: http://twitter.com/aubreypwd
-License: GPL2
-*/
-
-/*
- * Copyright 2016 Aubrey Portwood <aubreypwd@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
 if ( ! defined ( 'ABSPATH' ) ) {
 	exit;
 }
@@ -42,14 +15,58 @@ if ( ! class_exists( 'WP_DR_Budget_Plugin' ) ) {
 	class WP_DR_Budget_Plugin {
 
 		/**
+		 * The CPT class.
+		 *
+		 * WP_DR_Budget_CPT object is placed here at init.
+		 *
+		 * @since  1.0.0
+		 * @var boolean
+		 */
+		public $cpt = false;
+
+		/**
 		 * Construct.
 		 *
 		 * @author Aubrey Portwood
-		 *
 		 * @since  1.0.0
 		 */
 		function __construct() {
 
+			// Create the CPT.
+			$this->cpt = new WP_DR_Budget_CPT( array(
+
+				// Labels.
+				__( 'Budget', 'wp-dr-budget-cpt' ),
+				__( 'Budgets', 'wp-dr-budget-cpt' ),
+
+				// Slug.
+				'wp-dr-budget'
+
+			// CPT Arguments.
+			), array(
+
+				// Supports what features (commented out is off).
+				'supports' => array(
+					'title',
+					// 'editor',
+					// 'excerpt',
+					// 'thumbnail'
+				),
+
+			// CPT Columns.
+			), array(
+
+				// This is just here as an example for now.
+				'example_column' => array(
+
+					// The action that is do_action()'d when the column is shown in the Dashboard.
+					'do_action' => 'an_action_to_do_action',
+
+					// The label of the column.
+					'label'     => __( 'Example Column', 'wp-dr-budget' ),
+				),
+			) );
 		}
+
 	} // WP_DR_Budget_Plugin
 }
