@@ -19,6 +19,16 @@ if ( class_exists( 'CPT_Core' ) ) :
 		public $columns = array();
 
 		/**
+		 * The name of the CPT.
+		 *
+		 * @author Aubrey Portwood
+		 * @since  1.0.0
+		 *
+		 * @var string
+		 */
+		public $name = 'wp-dr-budget';
+
+		/**
 		 * Columns.
 		 *
 		 * @author Aubrey Portwood
@@ -55,6 +65,35 @@ if ( class_exists( 'CPT_Core' ) ) :
 		}
 
 		/**
+		 * Gives all roles the ability to use the Budgets CPT.
+		 *
+		 * @author Aubrey Portwood
+		 * @since   1.0.0
+		 */
+		public function roles() {
+
+			// Get all the roles.
+			$roles = get_editable_roles();
+
+			// Get the budget post type (we want the caps).
+			$post_type_object = get_post_type_object( $this->name );
+
+			// Go through any role.
+			foreach ( $roles as $role_key => $role_info ) {
+
+				// Get the role.
+				$role = get_role( $role_key );
+
+				// For this role, assign the caps.
+				foreach ( $post_type_object->cap as $cap_key => $cap ) {
+
+					// Add the cap for this post type to the role.
+					$role->add_cap( $cap );
+				}
+			}
+		}
+
+		/**
 		 * Construct.
 		 *
 		 * @author Aubrey Portwood
@@ -65,8 +104,14 @@ if ( class_exists( 'CPT_Core' ) ) :
 			// Assign the columns.
 			$this->columns = $columns;
 
+			// Assign the name of the CPT.
+			$this->name = $labels[2];
+
 			// Create the CPT.
 			parent::__construct( $labels, $args );
+
+			// Manage roles.
+			add_action( 'admin_init', array( $this, 'roles' ) );
 		}
 	}
 

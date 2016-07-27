@@ -40,7 +40,7 @@ if ( ! class_exists( 'WP_DR_Budget_Plugin' ) ) {
 				__( 'Budgets', 'wp-dr-budget-cpt' ),
 
 				// Slug.
-				'wp-dr-budget'
+				'wp-dr-budget',
 
 			// CPT Arguments.
 			), array(
@@ -52,6 +52,23 @@ if ( ! class_exists( 'WP_DR_Budget_Plugin' ) ) {
 					// 'excerpt',
 					// 'thumbnail'
 				),
+
+				/*
+				 * Caps:
+				 *
+				 * edit_budget
+				 * read_budget
+				 * delete_budget
+				 * edit_budgets
+				 * edit_others_budgets
+				 * publish_budgets
+				 * read_private_budgets
+				 * edit_budgets
+				 */
+				'capability_type' => array( 'budget', 'budgets' ),
+
+				// Not hierarchical.
+				'hierarchical' => false,
 
 			// CPT Columns.
 			), array(
